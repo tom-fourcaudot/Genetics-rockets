@@ -50,7 +50,10 @@ class Population {
   public void next() {
     for (int i = 0; i < this.popSize; i++) {
       Rocket parentA = this.matingPool[int(random(0, this.mateSize-1))];
-      Rocket parentB = this.matingPool[int(random(0, this.mateSize-1))];
+      Rocket parentB = parentA;
+      while (parentA.equals(parentB)) {
+        parentB = this.matingPool[int(random(0, this.mateSize-1))];
+      }
       Rocket child = parentA.crossover(parentB);
       child.mutate(this.mutationRate);
       this.pop[i] = child;

@@ -1,26 +1,25 @@
 Population p;
 final int POP_SIZE = 2000;
-final int MAX_SPAN = 200;
-final int NB_OBSTACLE = 3;
+final int MAX_SPAN = 900;
+final int NB_OBSTACLE = 2;
 int span;
 int gen;
 Obstacle[] o;
 PVector target;
 PVector start;
-final float MUTATION_RATE = 0.05;
+final float MUTATION_RATE = 0.01;
 
 void setup() {
   size(700, 700);
   background(20);
-  o = new Obstacle[3];
+  o = new Obstacle[NB_OBSTACLE];
   start = new PVector(width/2, height-50);
   p = new Population(MUTATION_RATE, POP_SIZE, MAX_SPAN);
   span = 0;
-  gen = 0;
+  gen = 1;
   o[0] = new Obstacle(width/4, height-150, 3*width/4, 50);
   o[1] = new Obstacle(0, height/2, 3*width/4, 50);
-  o[2] = new Obstacle(width/4, height/2, 3*width/4, 50);
-  target = new PVector(width/2, height/2);
+  target = new PVector(2*width/3, 100);
   frameRate(600);
   
 }

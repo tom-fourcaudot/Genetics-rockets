@@ -76,14 +76,15 @@ class Rocket {
   
   void calcFitness(PVector target) {
     float d = dist(this.pos.x, this.pos.y, target.x, target.y);
-    this.score = int(map(-d, -dist(0, 0, width, height), 0, 0, dist(0, 0, width, height)/4));
-    this.score -= MAX_SPAN-this.timeLived;
+    this.score = int(map(-d, -dist(0, 0, width, height), 0, 0, dist(0, 0, width, height)));
+    this.score -= (MAX_SPAN-this.timeLived);
     if (this.timeReach > 0) {
       this.score += (MAX_SPAN - this.timeReach+1)*10;
     }
     if (this.score <= 0) {
-      this.score = 1;
+      this.score = 10;
     }
+    this.score /= 10;
   }
   
   Rocket crossover(Rocket mate) {

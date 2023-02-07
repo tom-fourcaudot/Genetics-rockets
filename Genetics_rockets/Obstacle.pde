@@ -12,7 +12,7 @@ class Obstacle {
   }
   
   public void render() {
-    fill(120);
+    fill(255);
     rect(this.x, this.y, this.w, this.h);
   }
   

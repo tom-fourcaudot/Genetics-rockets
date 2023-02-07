@@ -50,7 +50,7 @@ class Rocket {
   public void render() {
     noStroke();
     if (this.alive) {
-    fill(0);
+    fill(200);
     } else {
     fill(255, 0, 0);
   }

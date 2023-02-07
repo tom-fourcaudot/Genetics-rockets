@@ -10,6 +10,7 @@ class Rocket {
   // Var for fitness
   boolean alive;
   int timeLived;
+  int timeReach;
   int score;
   
   
@@ -24,6 +25,7 @@ class Rocket {
     this.alive = true;
     this.timeLived = 0;
     this.score = 0;
+    this.timeReach = 0;
   }
   
   public void applyForce(PVector f) {
@@ -32,15 +34,26 @@ class Rocket {
     }
   }
   
-  public void update(Obstacle o) {
+  public void update(Obstacle[] o) {
     if(this.alive){
+      if (this.timeReach == 0){
       this.acc.limit(MAX_ACC);
       this.vel.add(this.acc);
       this.vel.limit(MAX_VEL);
       this.pos.add(this.vel);
+      if (dist(this.pos.x, this.pos.y, target.x, target.y) <= 10) {
+        this.timeReach = span;
+      }
+      for (Obstacle ob : o) {
+        this.alive = this.alive && !ob.collision(this);
+      }
+      } else{
+        this.vel.mult(0);
+      }
       this.acc.mult(0);
       this.timeLived++;
-      this.alive = !o.collision(this);
+      
+      
     } else {
       vel.mult(0);
       acc.mult(0);
@@ -50,7 +63,11 @@ class Rocket {
   public void render() {
     noStroke();
     if (this.alive) {
-    fill(200);
+      if (this.timeReach > 0) {
+        fill(0, 0, 255);
+      } else {
+        fill(200);
+      }
     } else {
     fill(255, 0, 0);
   }
@@ -59,12 +76,13 @@ class Rocket {
   
   void calcFitness(PVector target) {
     float d = dist(this.pos.x, this.pos.y, target.x, target.y);
-    this.score = int(map(-d, -700, 0, 0, 100));
-    this.score += this.timeLived/2;
-    this.score = int(this.score)/2;
-    if (this.score < 0) {
-      println("negative score");
-      this.score = 0;
+    this.score = int(map(-d, -dist(0, 0, width, height), 0, 0, dist(0, 0, width, height)/4));
+    this.score -= MAX_SPAN-this.timeLived;
+    if (this.timeReach > 0) {
+      this.score += (MAX_SPAN - this.timeReach+1)*10;
+    }
+    if (this.score <= 0) {
+      this.score = 1;
     }
   }
   

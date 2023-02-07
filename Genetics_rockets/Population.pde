@@ -22,7 +22,7 @@ class Population {
     }
   }
   
-  public void update(Obstacle o) {
+  public void update(Obstacle[] o) {
     for (Rocket r : this.pop) {
       r.applyForce(r.gene.genes[span]);
       r.update(o);

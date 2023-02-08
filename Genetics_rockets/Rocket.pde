@@ -3,6 +3,7 @@ class Rocket {
   PVector pos;
   PVector vel;
   PVector acc;
+  int id;
   final float MAX_VEL = 5;
   final int MAX_ACC = 1;
   // Genetics informations
@@ -14,7 +15,7 @@ class Rocket {
   int score;
   
   
-  public Rocket(PVector start,int maxi){
+  public Rocket(PVector start,int maxi, int _id){
     // Initialize physics
     this.pos = start.copy();
     this.vel = new PVector(0, 0);
@@ -26,6 +27,7 @@ class Rocket {
     this.timeLived = 0;
     this.score = 0;
     this.timeReach = 0;
+    this.id = _id;
   }
   
   public void applyForce(PVector f) {
@@ -91,8 +93,8 @@ class Rocket {
     this.score /= 10000;
   }
   
-  Rocket crossover(Rocket mate) {
-    Rocket child = new Rocket(start, MAX_SPAN);
+  Rocket crossover(Rocket mate, int _id) {
+    Rocket child = new Rocket(start, MAX_SPAN, _id);
     for (int i = 0; i < child.gene.size; i++){
       float choice = random(0, 1);
       if (choice < 0.5) {

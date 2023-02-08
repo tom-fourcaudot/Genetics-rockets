@@ -14,7 +14,7 @@ class Population {
     this.mutationRate = mr;
     this.pop = new Rocket[_size];
     for (int i = 0; i < _size; i++) {
-      pop[i] = new Rocket(start.copy(), maxi);
+      pop[i] = new Rocket(start.copy(), maxi, i);
     }
     this.MAX_MAT_SIZE = _size * 50;
     this.maxScore = 0;
@@ -51,17 +51,17 @@ class Population {
         count++;
       }
     }
-    this.mateSize = count;
+    this.mateSize = count-1;
   }
   
   public void next() {
     for (int i = 0; i < this.popSize; i++) {
       Rocket parentA = this.matingPool[int(random(0, this.mateSize-1))];
       Rocket parentB = parentA;
-      while (parentA.equals(parentB)) {
+      while (parentA.id == parentB.id) {
         parentB = this.matingPool[int(random(0, this.mateSize-1))];
       }
-      Rocket child = parentA.crossover(parentB);
+      Rocket child = parentA.crossover(parentB, i);
       child.mutate(this.mutationRate);
       this.pop[i] = child;
     }

@@ -43,6 +43,10 @@ class Rocket {
       this.pos.add(this.vel);
       if (dist(this.pos.x, this.pos.y, target.x, target.y) <= 10) {
         this.timeReach = span;
+        reach++;
+        if (this.timeReach < bestTime) {
+          bestTime = this.timeReach;
+        }
       }
       for (Obstacle ob : o) {
         this.alive = this.alive && !ob.collision(this);
@@ -84,7 +88,7 @@ class Rocket {
     if (this.score <= 0) {
       this.score = 1;
     }
-    this.score /= 1000;
+    this.score /= 10000;
   }
   
   Rocket crossover(Rocket mate) {

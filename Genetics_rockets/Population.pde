@@ -1,10 +1,13 @@
 class Population {
   Rocket[] pop;
   Rocket[] matingPool;
+  final int MAX_MAT_SIZE;
   int mateSize;
   int popSize;
   // Simulation duration of a generation
   float mutationRate;
+  int maxScore;
+  int sumScore;
   
   public Population(float mr, int _size, int maxi) {
     this.popSize = _size;
@@ -13,6 +16,8 @@ class Population {
     for (int i = 0; i < _size; i++) {
       pop[i] = new Rocket(start.copy(), maxi);
     }
+    this.MAX_MAT_SIZE = _size * 50;
+    this.maxScore = 0;
     this.mateSize = 0;
   }
   
@@ -32,19 +37,21 @@ class Population {
   public void calcFitness(PVector target) {
     for(Rocket r : this.pop) {
       r.calcFitness(target);
-      this.mateSize += r.score;
+      this.maxScore = max(r.score, this.maxScore);
+      this.sumScore += r.score;
     }
   }
   
   public void naturalSelection() {
-    this.matingPool = new Rocket[this.mateSize];
+    this.matingPool = new Rocket[this.MAX_MAT_SIZE];
     int count = 0;
     for (Rocket r : this.pop) {
-      for (int i = 0; i < r.score; i++){
+      for (int i = 0; i < (int)Math.floor(map(float(r.score)/this.sumScore, 0, 1, 0, this.MAX_MAT_SIZE)); i++){
         matingPool[count] = r;
         count++;
       }
     }
+    this.mateSize = count;
   }
   
   public void next() {
@@ -58,6 +65,7 @@ class Population {
       child.mutate(this.mutationRate);
       this.pop[i] = child;
     }
+    this.maxScore = 0;
     this.mateSize = 0;
   }
   
